@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useActionState } from "react";
+import React, { useActionState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { SectionHeader } from "@/components/common/section-header";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
@@ -16,8 +17,39 @@ const EVENT_TYPES = [
   { label: "Corporate Event Performance", value: "Corporate Event Performance" },
 ];
 
-export default function ContactPage() {
-  // useActionState handles: form trigger, return state, and pending status natively
+// Map incoming program names to our dropdown values
+const getMatchedProgram = (param: string | null) => {
+  if (!param) return "";
+  const normalized = param.toLowerCase();
+  if (normalized.includes("morning") || normalized.includes("ambience")) {
+    return "Morning Flute Residency";
+  }
+  if (normalized.includes("sunset") || normalized.includes("lounge")) {
+    return "Sunset Lounge Residency";
+  }
+  if (normalized.includes("brunch")) {
+    return "Brunch Vocal & Flute";
+  }
+  if (normalized.includes("dinner") || normalized.includes("ghazal") || normalized.includes("dining")) {
+    return "Dinner Vocal / Ghazals";
+  }
+  if (normalized.includes("residency") || normalized.includes("full day")) {
+    return "Full Day Residency Package";
+  }
+  if (normalized.includes("wedding")) {
+    return "Destination Wedding Performance";
+  }
+  if (normalized.includes("corporate")) {
+    return "Corporate Event Performance";
+  }
+  return "";
+};
+
+function ContactFormContent() {
+  const searchParams = useSearchParams();
+  const programParam = searchParams.get("program");
+  const defaultProgram = getMatchedProgram(programParam);
+
   const [state, formAction, isPending] = useActionState(sendContactInquiry, null);
 
   return (
@@ -168,8 +200,8 @@ export default function ContactPage() {
                     id="eventType"
                     name="eventType"
                     required
-                    defaultValue=""
-                    className="bg-secondary-bg/20 border border-border/60 px-4 py-3 rounded-lg text-sm focus:border-gold focus:outline-none transition-colors appearance-none cursor-pointer"
+                    defaultValue={defaultProgram}
+                    className="bg-secondary-bg/20 border border-border/60 px-4 py-3 rounded-lg text-sm focus:border-gold focus:outline-none transition-colors appearance-none cursor-pointer text-foreground"
                   >
                     <option value="" disabled>Select performance type...</option>
                     {EVENT_TYPES.map((type) => (
@@ -223,3 +255,12 @@ export default function ContactPage() {
     </main>
   );
 }
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-foreground/50 font-sans text-sm">Loading booking form...</div>}>
+      <ContactFormContent />
+    </Suspense>
+  );
+}
+
