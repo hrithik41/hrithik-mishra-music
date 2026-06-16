@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Luxury Colors */
+  --background: #F8F5F0;        /* Warm editorial background */
+  --foreground: #1C1C1C;        /* Elegant dark text */
+  --secondary-bg: #F2EEE7;      /* Warm card/secondary background */
+  --border: #E5DED2;            /* Muted borders */
+  
+  --gold: #C9A66B;              /* Brand Gold Accent */
+  --gold-dark: #A67C52;         /* Accent Dark Gold */
+  --gold-hover: #D8B983;        /* Bright Gold for Hover interactions */
+  --dark-bg: #121212;           /* Dark Section Background */
+}
+
+@theme {
+  /* Register Tailwind Custom Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-secondary-bg: var(--secondary-bg);
+  --color-border: var(--border);
+  
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-hover: var(--gold-hover);
+  --color-dark-bg: var(--dark-bg);
+
+  /* Register Custom Google Fonts */
+  --font-serif-display: var(--font-playfair);
+  --font-serif-quote: var(--font-cormorant);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
