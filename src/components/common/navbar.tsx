@@ -22,9 +22,14 @@ export const Navbar = () => {
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  const isHomePage = pathname === "/";
+  const isTransparent = isHomePage && !isScrolled;
 
   // Auto hide/reveal header based on scroll direction
   useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 50);
     const previous = scrollY.getPrevious() ?? 0;
     if (latest > previous && latest > 150) {
       setHidden(true); // Scrolling Down
@@ -42,7 +47,12 @@ export const Navbar = () => {
         }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-0 left-0 right-0 z-50 w-full border-b border-border/30 bg-background/80 backdrop-blur-md transition-colors duration-300"
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
+          isTransparent && !isMobileMenuOpen
+            ? "bg-transparent text-white"
+            : "border-b border-border/30 bg-background/80 backdrop-blur-md text-foreground"
+        )}
       >
         <div className="w-full px-6 md:px-12 lg:px-16 h-20 flex items-center justify-between">
           
@@ -66,7 +76,7 @@ export const Navbar = () => {
                   href={link.href}
                   className={cn(
                     "font-sans text-[11px] tracking-widest uppercase hover:text-gold transition-colors duration-300 relative py-2 font-medium",
-                    isActive ? "text-gold-dark" : "text-foreground/80"
+                    isActive ? "text-gold" : isTransparent ? "text-white/80" : "text-foreground/80"
                   )}
                 >
                   {link.label}
@@ -85,7 +95,7 @@ export const Navbar = () => {
           {/* Call to Action Booking Button */}
           <div className="hidden lg:block">
             <Link href="/contact">
-              <Button variant="secondary" size="sm">
+              <Button variant="primary" size="sm">
                 Book An Artist
               </Button>
             </Link>
@@ -99,19 +109,22 @@ export const Navbar = () => {
           >
             <span
               className={cn(
-                "h-[1.5px] w-full bg-foreground transition-all duration-300 origin-left",
+                "h-[1.5px] w-full transition-all duration-300 origin-left",
+                isMobileMenuOpen || !isTransparent ? "bg-foreground" : "bg-white",
                 isMobileMenuOpen ? "rotate-45 translate-y-[2px]" : ""
               )}
             />
             <span
               className={cn(
-                "h-[1.5px] w-full bg-foreground transition-all duration-300",
+                "h-[1.5px] w-full transition-all duration-300",
+                isMobileMenuOpen || !isTransparent ? "bg-foreground" : "bg-white",
                 isMobileMenuOpen ? "opacity-0" : "opacity-100"
               )}
             />
             <span
               className={cn(
-                "h-[1.5px] w-full bg-foreground transition-all duration-300 origin-left",
+                "h-[1.5px] w-full transition-all duration-300 origin-left",
+                isMobileMenuOpen || !isTransparent ? "bg-foreground" : "bg-white",
                 isMobileMenuOpen ? "-rotate-45 -translate-y-2px" : ""
               )}
             />

@@ -3,7 +3,15 @@
 import React from "react";
 import { FadeIn } from "@/components/animations/fade-in";
 
-const STATS_ITEMS = [
+export interface StatItem {
+  value: string;
+  label: string;
+  subLabel?: string;
+  icon?: React.ReactNode; // For hardcoded fallback
+  svgPath?: string; // For Sanity data
+}
+
+const STATS_ITEMS: StatItem[] = [
   {
     value: "8+",
     label: "Years of",
@@ -46,20 +54,28 @@ const STATS_ITEMS = [
   },
 ];
 
-export const Stats = () => {
+export const Stats = ({ stats }: { stats?: StatItem[] }) => {
+  const displayStats = stats && stats.length > 0 ? stats : STATS_ITEMS;
+
   return (
     <section className="w-full bg-secondary-bg/40 py-12 border-y border-border/40">
       <FadeIn duration={0.8}>
         {/* Divide borders display on desktop view but stack on mobile */}
         <div className="w-full px-6 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 divide-y sm:divide-y-0 lg:divide-x divide-border/50">
-          {STATS_ITEMS.map((item, idx) => (
+          {displayStats.map((item, idx) => (
             <div 
               key={idx} 
               className="flex items-center justify-start lg:justify-center gap-5 py-6 sm:py-4 lg:py-2 first:pt-0 lg:first:pt-2 last:pb-0 lg:last:pb-2 border-border/30"
             >
               {/* Mini Icon Container */}
               <div className="shrink-0 p-3 bg-background rounded-full shadow-sm border border-border/20">
-                {item.icon}
+                {item.svgPath ? (
+                  <svg className="w-6 h-6 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={item.svgPath} />
+                  </svg>
+                ) : (
+                  item.icon
+                )}
               </div>
 
               {/* Numerical stats */}

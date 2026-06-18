@@ -4,13 +4,39 @@ import { ExperiencesGrid } from "@/components/sections/experiences-grid";
 import { GalleryClient } from "@/components/pages/gallery-client";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/animations/reveal";
+import { sanityFetch } from "@/sanity/lib/live";
+import { groq } from "next-sanity";
+import { urlFor } from "@/sanity/lib/image";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const { data: siteSettings } = await sanityFetch({
+    query: groq`*[_type == "siteSettings"][0]`,
+  });
+
+  const settings: any = siteSettings;
+
+  const heroBackgroundImages = settings?.heroBackgroundImages
+    ? settings.heroBackgroundImages
+        .filter((img: any) => img?.asset)
+        .map((img: any) => urlFor(img).url())
+    : undefined;
+
+  const heroBackgroundImagesMobile = settings?.heroBackgroundImagesMobile
+    ? settings.heroBackgroundImagesMobile
+        .filter((img: any) => img?.asset)
+        .map((img: any) => urlFor(img).url())
+    : undefined;
+
   return (
     <main className="min-h-screen bg-background text-foreground pb-20">
       
       {/* 1. Cinematic Hero Section (Stretches Full Width edge-to-edge) */}
-      <Hero />
+      <Hero 
+        heroBackgroundImages={heroBackgroundImages} 
+        heroBackgroundImagesMobile={heroBackgroundImagesMobile} 
+      />
 
       {/* 2. Stats Section (Stretches Full Width edge-to-edge) */}
       <Stats />
