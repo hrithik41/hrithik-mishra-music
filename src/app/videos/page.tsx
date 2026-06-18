@@ -40,7 +40,7 @@ const VIDEOS = [
 export default function VideosPage() {
   return (
     <main className="min-h-screen bg-background text-foreground py-20">
-      <div className="w-full px-6 md:px-12 lg:px-16 space-y-16 max-w-7xl mx-auto">
+      <div className="w-full px-6 md:px-12 lg:px-16 space-y-16">
         
         {/* Header */}
         <Reveal>
@@ -69,7 +69,7 @@ export default function VideosPage() {
 
         {/* Note on Custom Auditions */}
         <Reveal yOffset={20}>
-          <div className="bg-secondary-bg/25 border border-border/40 p-8 rounded-2xl max-w-3xl mx-auto text-center space-y-6 mt-12">
+          <div className="bg-secondary-bg/25 border border-border/40 p-8 rounded-2xl text-center space-y-6 mt-12">
             <h3 className="font-serif-display text-xl md:text-2xl font-medium tracking-wide">
               Request a Custom Audition / Private Stream
             </h3>

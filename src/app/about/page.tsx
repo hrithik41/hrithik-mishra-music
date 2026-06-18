@@ -40,7 +40,7 @@ const TIMELINE = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background text-foreground py-20">
-      <div className="w-full px-6 md:px-12 lg:px-16 space-y-24 max-w-7xl mx-auto">
+      <div className="w-full px-6 md:px-12 lg:px-16 space-y-24">
         
         {/* Editorial Section Header */}
         <Reveal>
@@ -84,7 +84,7 @@ export default function AboutPage() {
           {/* Portrait Image Block */}
           <div className="lg:col-span-5 relative group overflow-hidden rounded-2xl border border-border/30 bg-secondary-bg/25">
             <FadeIn duration={1.2} delay={0.2}>
-              <div className="relative aspect-[3/4] w-full overflow-hidden">
+              <div className="relative aspect-3/4 w-full overflow-hidden">
                 <img
                   src="/assets/hero-artist.jpg"
                   alt="Hrithik Virendra Mishra"

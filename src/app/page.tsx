@@ -1,5 +1,7 @@
 import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
+import { ExperiencesGrid } from "@/components/sections/experiences-grid";
+import { GalleryClient } from "@/components/pages/gallery-client";
 import { SectionHeader } from "@/components/common/section-header";
 import { Reveal } from "@/components/animations/reveal";
 
@@ -13,10 +15,20 @@ export default function Home() {
       {/* 2. Stats Section (Stretches Full Width edge-to-edge) */}
       <Stats />
 
-      {/* 3. Main Content Container (Aligned with grid padding) */}
-      <div className="w-full px-6 md:px-12 lg:px-16 mt-32 space-y-32">
-        
-        {/* Philosophy Content block */}
+      {/* 3. Performance Experiences Section (White Cards, Gold overlap badges) */}
+      <ExperiencesGrid />
+
+      {/* 4. Featured Gallery (Reusing the dynamic gallery client) */}
+      <div className="-mt-10">
+        <GalleryClient 
+          tagline="FEATURED GALLERY" 
+          title="Moments that Create Memories" 
+          subtitle="Explore some selected visual snapshots of live performances at premium resorts."
+        />
+      </div>
+
+      {/* 5. Main Philosophy block */}
+      <div className="w-full px-6 md:px-12 lg:px-16 mt-20 space-y-32">
         <section className="space-y-16">
           <SectionHeader
             tagline="Philosophy"
@@ -37,8 +49,8 @@ export default function Home() {
             </Reveal>
           </div>
         </section>
-        
       </div>
+
     </main>
   );
 }

@@ -54,7 +54,7 @@ function ContactFormContent() {
 
   return (
     <main className="min-h-screen bg-background text-foreground py-20">
-      <div className="w-full px-6 md:px-12 lg:px-16 space-y-16 max-w-7xl mx-auto">
+      <div className="w-full px-6 md:px-12 lg:px-16 space-y-16">
         
         <Reveal>
           <SectionHeader

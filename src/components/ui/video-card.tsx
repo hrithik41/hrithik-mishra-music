@@ -20,7 +20,7 @@ export function VideoCard({ videoId, title, description, category }: VideoCardPr
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
 
   return (
-    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/10 bg-dark-bg group shadow-md">
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border/10 bg-dark-bg group shadow-md">
       {!isPlaying ? (
         <div 
           onClick={() => setIsPlaying(true)} 

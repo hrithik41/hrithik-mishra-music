@@ -93,7 +93,7 @@ export default async function ExperiencesPage() {
 
   return (
     <main className="min-h-screen bg-background text-foreground py-20">
-      <div className="w-full px-6 md:px-12 lg:px-16 space-y-16 max-w-7xl mx-auto">
+      <div className="w-full px-6 md:px-12 lg:px-16 space-y-16">
         
         {/* Page Header */}
         <Reveal>
@@ -117,7 +117,7 @@ export default async function ExperiencesPage() {
                 <div className="h-full flex flex-col justify-between rounded-2xl border border-border/40 overflow-hidden bg-secondary-bg/25 group hover:border-gold/30 hover:bg-secondary-bg/40 transition-all duration-500 shadow-sm">
                   
                   {/* Aspect Ratio Image with zoom effect */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border/20">
+                  <div className="relative aspect-16/10 w-full overflow-hidden border-b border-border/20">
                     <img
                       src={exp.imageUrl}
                       alt={exp.title}
