@@ -11,11 +11,11 @@ import { urlFor } from "@/sanity/lib/image";
 export const revalidate = 60;
 
 export default async function Home() {
-  const { data: siteSettings } = await sanityFetch({
-    query: groq`*[_type == "siteSettings"][0]`,
+  const { data: homePageSettings } = await sanityFetch({
+    query: groq`*[_type == "homePage"][0]`,
   });
 
-  const settings: any = siteSettings;
+  const settings: any = homePageSettings;
 
   const heroBackgroundImages = settings?.heroBackgroundImages
     ? settings.heroBackgroundImages
@@ -34,12 +34,16 @@ export default async function Home() {
       
       {/* 1. Cinematic Hero Section (Stretches Full Width edge-to-edge) */}
       <Hero 
+        heroTag={settings?.heroTag}
+        heroTitle={settings?.heroTitle}
+        heroTitleGold={settings?.heroTitleGold}
+        heroSubtitle={settings?.heroSubtitle}
         heroBackgroundImages={heroBackgroundImages} 
         heroBackgroundImagesMobile={heroBackgroundImagesMobile} 
       />
 
       {/* 2. Stats Section (Stretches Full Width edge-to-edge) */}
-      <Stats />
+      <Stats stats={settings?.stats} />
 
       {/* 3. Performance Experiences Section (White Cards, Gold overlap badges) */}
       <ExperiencesGrid />

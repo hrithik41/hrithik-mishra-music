@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
-import { SanityLive } from "@/sanity/lib/live";
+import { SanityLive, sanityFetch } from "@/sanity/lib/live";
+import { groq } from "next-sanity";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,7 +28,7 @@ const cormorant = Cormorant_Garamond({
 
 // Global SEO Meta Tags (For homepage and general sharing)
 export const metadata: Metadata = {
-  title: "Hrithik Virendra Mishra | Luxury Hospitality Artist & Flautist",
+  title: "Hrithik Mishra | Luxury Hospitality Artist & Flautist",
   description: "Professional Flautist & Vocalist creating memorable guest experiences through live music and residency programs at Taj, Oberoi, and Marriott Resorts.",
   keywords: ["Luxury Hotel Flautist", "Professional Flautist India", "Resident Artist India", "Wedding Flautist Mumbai"],
   openGraph: {
@@ -40,11 +41,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // Fetch the data from Sanity!
+  const { data: navbarSettings } = await sanityFetch({
+    query: groq`*[_type == "navbar"][0]`,
+  });
+
+  // Tell TypeScript to relax so we can read the fields
+  const settings: any = navbarSettings;
+
+  // Extract the specific fields we just created in Step 1
+  const navData = {
+    logoText: settings?.logoText || "Hrithik Virendra Mishra",
+    logoSubtitle: settings?.logoSubtitle || "Flautist & Vocalist",
+    navLinks: settings?.navLinks || [
+      { label: "Home", href: "/" } // A fallback link just in case
+    ]
+  };
+
   // Structured data telling Google search crawlers exactly who you are and what you do
   const jsonLd = {
     "@context": "https://schema.org",
@@ -76,7 +95,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Navbar />
+        <Navbar data={navData} />
         <div className="flex-1 pt-20">
           {children}
         </div>

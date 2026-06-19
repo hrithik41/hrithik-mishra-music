@@ -7,17 +7,15 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Experiences", href: "/experiences" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Videos", href: "/videos" },
-  { label: "Residency", href: "/residency-programs" },
-  { label: "Contact", href: "/contact" },
-];
+export interface NavbarProps {
+  data: {
+    logoText: string;
+    logoSubtitle: string;
+    navLinks: { _key?: string; label: string; href: string }[];
+  }
+}
 
-export const Navbar = () => {
+export const Navbar = ({ data }: NavbarProps) => {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
@@ -55,25 +53,26 @@ export const Navbar = () => {
         )}
       >
         <div className="w-full px-6 md:px-12 lg:px-16 h-20 flex items-center justify-between">
-          
+
           {/* Editorial Brand Name Logo */}
           <Link href="/" className="flex flex-col items-start group">
             <span className="font-serif-display text-[15px] sm:text-base tracking-[0.2em] uppercase font-semibold group-hover:text-gold transition-colors duration-300">
-              Hrithik Virendra Mishra
+              {data.logoText}
             </span>
             <span className="font-sans text-[8px] sm:text-[9px] tracking-[0.25em] uppercase text-gold-dark font-medium mt-0.5">
-              Flautist & Vocalist
+              {data.logoSubtitle}
             </span>
           </Link>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-8">
-            {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href;
+            {data.navLinks.map((link, idx) => {
+              const safeHref = link.href || "/";
+              const isActive = pathname === safeHref;
               return (
                 <Link
-                  key={link.href}
-                  href={link.href}
+                  key={link._key || safeHref || idx}
+                  href={safeHref}
                   className={cn(
                     "font-sans text-[11px] tracking-widest uppercase hover:text-gold transition-colors duration-300 relative py-2 font-medium",
                     isActive ? "text-gold" : isTransparent ? "text-white/80" : "text-foreground/80"
@@ -96,7 +95,7 @@ export const Navbar = () => {
           <div className="hidden lg:block">
             <Link href="/contact">
               <Button variant="primary" size="sm">
-                Book An Artist
+                Book Here
               </Button>
             </Link>
           </div>
@@ -143,17 +142,18 @@ export const Navbar = () => {
             className="fixed inset-0 z-40 bg-background/98 flex flex-col justify-center px-8 lg:hidden"
           >
             <nav className="flex flex-col space-y-6 text-left max-w-sm mx-auto w-full">
-              {NAV_LINKS.map((link, idx) => {
-                const isActive = pathname === link.href;
+              {data.navLinks.map((link, idx) => {
+                const safeHref = link.href || "/";
+                const isActive = pathname === safeHref;
                 return (
                   <motion.div
-                    key={link.href}
+                    key={link._key || safeHref || idx}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: idx * 0.05, ease: "easeOut" }}
                   >
                     <Link
-                      href={link.href}
+                      href={safeHref}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
                         "font-serif-display text-3xl tracking-wider hover:text-gold transition-colors duration-300",
@@ -168,12 +168,12 @@ export const Navbar = () => {
               <motion.div
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: NAV_LINKS.length * 0.05, ease: "easeOut" }}
+                transition={{ delay: data.navLinks.length * 0.05, ease: "easeOut" }}
                 className="pt-6"
               >
                 <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                   <Button variant="primary" size="md" className="w-full">
-                    Book An Artist
+                    Book Here
                   </Button>
                 </Link>
               </motion.div>

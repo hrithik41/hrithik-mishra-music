@@ -6,15 +6,16 @@ import { FadeIn } from "@/components/animations/fade-in";
 import { Reveal } from "@/components/animations/reveal";
 
 export interface HeroProps {
+  heroTag?: string;
   heroTitle?: string;
+  heroTitleGold?: string;
   heroSubtitle?: string;
   heroBackgroundImages?: string[];
   heroBackgroundImagesMobile?: string[];
 }
 
-export const Hero = ({ heroTitle, heroSubtitle, heroBackgroundImages, heroBackgroundImagesMobile }: HeroProps) => {
-    // We split the title by newline if provided, otherwise fallback to the highly styled Hrithik Virendra Mishra
-    const titleLines = heroTitle ? heroTitle.split('\n') : null;
+export const Hero = ({ heroTag, heroTitle, heroTitleGold, heroSubtitle, heroBackgroundImages, heroBackgroundImagesMobile }: HeroProps) => {
+    // Determine the images to use
     const desktopImages = (heroBackgroundImages && heroBackgroundImages.length > 0) 
         ? heroBackgroundImages 
         : ['/assets/hero-artist.jpg'];
@@ -75,20 +76,15 @@ export const Hero = ({ heroTitle, heroSubtitle, heroBackgroundImages, heroBackgr
                     <FadeIn duration={1.0}>
                         <div className="space-y-4">
                             <span className="font-sans text-xs sm:text-sm tracking-[0.3em] uppercase text-gold font-bold block">
-                                PROFESSIONAL FLAUTIST & VOCALIST
+                                {heroTag || "PROFESSIONAL FLAUTIST & VOCALIST"}
                             </span>
 
-                            {titleLines ? (
-                                <h1 className="font-serif-display text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-[1.15] text-white">
-                                    {titleLines[0]} <br />
-                                    {titleLines[1] && <span className="font-serif-display italic font-normal text-gold-hover">{titleLines.slice(1).join('\n')}</span>}
-                                </h1>
-                            ) : (
-                                <h1 className="font-serif-display text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-[1.15] text-white">
-                                    Hrithik <br />
-                                    <span className="font-serif-display italic font-normal text-gold-hover">Virendra Mishra</span>
-                                </h1>
-                            )}
+                            <h1 className="font-serif-display text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-[1.15] text-white">
+                                {heroTitle || "Hrithik"} <br />
+                                <span className="font-serif-display italic font-normal text-gold-hover">
+                                    {heroTitleGold || "Virendra Mishra"}
+                                </span>
+                            </h1>
                         </div>
                     </FadeIn>
 

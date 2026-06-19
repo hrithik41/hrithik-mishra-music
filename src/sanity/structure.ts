@@ -6,15 +6,35 @@ export const structure: StructureResolver = (S) =>
     .title('Content')
     .items([
       S.listItem()
-        .title('Site Settings')
-        .id('siteSettings')
+        .title('Global Components')
         .child(
-          S.document()
-            .schemaType('siteSettings')
-            .documentId('siteSettings')
+          S.list()
+            .title('Global Components')
+            .items([
+              S.listItem()
+                .title('Navbar')
+                .child(S.document().schemaType('navbar').documentId('navbar')),
+              S.listItem()
+                .title('Footer')
+                .child(S.document().schemaType('footer').documentId('footer')),
+            ])
+        ),
+      S.listItem()
+        .title('Pages')
+        .child(
+          S.list()
+            .title('Pages')
+            .items([
+              S.listItem()
+                .title('Home Page')
+                .child(S.document().schemaType('homePage').documentId('homePage')),
+              S.listItem()
+                .title('About Page')
+                .child(S.document().schemaType('aboutPage').documentId('aboutPage')),
+            ])
         ),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (listItem) => !['siteSettings'].includes(listItem.getId()!)
+        (listItem) => !['navbar', 'footer', 'homePage', 'aboutPage'].includes(listItem.getId()!)
       ),
     ])
