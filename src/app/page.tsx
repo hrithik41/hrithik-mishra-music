@@ -15,6 +15,52 @@ export default async function Home() {
     query: groq`*[_type == "homePage"][0]`,
   });
 
+  const { data: experiencesData } = await sanityFetch({
+    query: groq`*[_type == "experience"] | order(orderRank asc) {
+      _id,
+      title,
+      venueLogo,
+      location,
+      isFeatured,
+      duration,
+      previewText,
+      fullText,
+      highlights,
+      coverImage,
+      gallery[] {
+        _type == "image" => {
+          "_type": "image",
+          "image": @
+        },
+        _type == "videoItem" => {
+          "_type": "video",
+          "url": coalesce(videoFile.asset->url, url),
+          "thumbnail": thumbnail
+        }
+      }
+    }`,
+  });
+
+  const experiences = (experiencesData as any[])?.map(exp => ({
+    ...exp,
+    coverImage: exp.coverImage?.asset ? urlFor(exp.coverImage).url() : "",
+    gallery: exp.gallery?.map((item: any) => {
+      if (item._type === 'image') {
+        return {
+          _type: 'image',
+          url: item.image?.asset ? urlFor(item.image).url() : ""
+        };
+      } else if (item._type === 'video') {
+        return {
+          _type: 'video',
+          url: item.url,
+          thumbnail: item.thumbnail?.asset ? urlFor(item.thumbnail).url() : undefined
+        };
+      }
+      return item;
+    })
+  }));
+
   const settings: any = homePageSettings;
 
   const heroBackgroundImages = settings?.heroBackgroundImages
@@ -45,7 +91,12 @@ export default async function Home() {
       <Stats stats={settings?.stats} />
 
       {/* 3. Performance Experiences Section (White Cards, Gold overlap badges) */}
-      <ExperiencesGrid />
+      <ExperiencesGrid 
+        goldenTitle={settings?.experiencesGoldenTitle}
+        title={settings?.experiencesTitle}
+        subtitle={settings?.experiencesSubtitle}
+        experiences={(experiences as any[])?.length > 0 ? (experiences as any[]) : undefined}
+      />
 
       {/* 4. Featured Gallery (Reusing the dynamic gallery client) */}
       <div className="-mt-10">

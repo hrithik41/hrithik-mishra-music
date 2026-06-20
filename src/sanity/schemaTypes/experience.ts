@@ -9,35 +9,61 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      description: 'The name of the venue (e.g. Taj Lands End)',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
+      name: 'venueLogo',
+      title: 'Venue Logo',
       type: 'string',
       options: {
         list: [
-          { title: 'Morning Ambience', value: 'morning' },
-          { title: 'Sunset Lounge', value: 'sunset' },
-          { title: 'Brunch Entertainment', value: 'brunch' },
-          { title: 'Dinner Experience', value: 'dinner' },
-          { title: 'Wedding Entry', value: 'wedding' },
-          { title: 'Corporate Events', value: 'corporate' },
+          { title: 'Taj', value: 'TAJ' },
+          { title: 'Ginger', value: 'GINGER' },
+          { title: 'None/Other', value: 'OTHER' },
         ],
       },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'description',
-      title: 'Short Description',
+      name: 'location',
+      title: 'Location / Subtitle',
+      type: 'string',
+      description: 'e.g. MUMBAI',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'isFeatured',
+      title: 'Featured',
+      type: 'boolean',
+      description: 'Toggle to show the "FEATURED" badge on the card.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'duration',
+      title: 'Duration',
+      type: 'string',
+      description: 'e.g. "02:15"',
+    }),
+    defineField({
+      name: 'previewText',
+      title: 'Preview Text',
       type: 'text',
+      description: 'The short description visible directly on the card.',
       validation: (Rule) => Rule.max(200),
     }),
     defineField({
-      name: 'tags',
-      title: 'Tags / Focus Areas (e.g. Breakfast, Wellness)',
+      name: 'fullText',
+      title: 'Full Text',
+      type: 'text',
+      description: 'The complete description shown when the card is expanded.',
+    }),
+    defineField({
+      name: 'highlights',
+      title: 'Experience Highlights',
       type: 'array',
       of: [{ type: 'string' }],
+      description: 'Bullet points shown in the expanded view (e.g. "Lobby Ambience").',
     }),
     defineField({
       name: 'coverImage',
@@ -46,5 +72,62 @@ export default defineType({
       options: { hotspot: true },
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
+      of: [
+        { type: 'image', options: { hotspot: true } },
+        { 
+          type: 'object',
+          name: 'videoItem',
+          title: 'Video',
+          fields: [
+            { 
+              name: 'videoFile', 
+              type: 'file',
+              title: 'Upload Video File (MP4)',
+              description: 'Upload a direct MP4 file. This will play beautifully without YouTube controls.',
+              options: { accept: 'video/mp4,video/webm' }
+            },
+            { 
+              name: 'url', 
+              type: 'url',
+              title: 'Or Paste Video URL (YouTube/Vimeo)',
+              description: 'Use this only if you do not have an MP4 file to upload.'
+            },
+            { 
+              name: 'thumbnail', 
+              type: 'image',
+              title: 'Video Thumbnail (Required for URLs)',
+              description: 'An image to show before the video plays.',
+              options: { hotspot: true }
+            }
+          ]
+        }
+      ],
+    }),
+    defineField({
+      name: 'orderRank',
+      title: 'Order Rank',
+      type: 'number',
+      description: 'Used to manually sort experiences in the grid.',
+    }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'location',
+      media: 'coverImage',
+      featured: 'isFeatured'
+    },
+    prepare(selection) {
+      const { title, subtitle, media, featured } = selection;
+      return {
+        title: `${title}${featured ? ' (Featured)' : ''}`,
+        subtitle: subtitle,
+        media: media,
+      }
+    }
+  }
 });

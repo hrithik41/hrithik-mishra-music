@@ -5,6 +5,30 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactPlayer from 'react-player';
+
+const Player = ReactPlayer as any;
+
+export interface ExperienceMedia {
+  _type: 'image' | 'video';
+  url: string;
+  thumbnail?: string;
+}
+
+export interface ExperienceItem {
+  _id: string;
+  title: string;
+  venueLogo: string;
+  location: string;
+  isFeatured: boolean;
+  duration?: string;
+  previewText?: string;
+  fullText?: string;
+  highlights?: string[];
+  coverImage: string;
+  gallery?: ExperienceMedia[];
+}
+
 
 // Swiper imports
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -30,102 +54,65 @@ const GingerLogo = () => (
   </div>
 );
 
-const EXPERIENCES = [
+const EXPERIENCES: ExperienceItem[] = [
   {
-    id: "taj-lands-end",
-    logo: "TAJ",
-    isTaj: true,
+    _id: "taj-lands-end",
+    venueLogo: "TAJ",
     title: "Taj Lands End",
-    subtitle: "MUMBAI",
-    description: "Luxury flute residency creating serene ambience and memorable moments for distinguished guests.",
-    fullDescription: "Immerse yourself in the soulful melodies of the flute at the iconic Taj Lands End. Our exclusive residency program features ambient morning instrumentals and sophisticated evening performances designed to elevate the luxury guest experience. Set against the stunning backdrop of the Arabian Sea, these curated performances transform the lobby and premium dining areas into a sanctuary of tranquility.",
-    image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=800",
+    location: "MUMBAI",
+    previewText: "Luxury flute residency creating serene ambience and memorable moments for distinguished guests.",
+    fullText: "Immerse yourself in the soulful melodies of the flute at the iconic Taj Lands End. Our exclusive residency program features ambient morning instrumentals and sophisticated evening performances designed to elevate the luxury guest experience. Set against the stunning backdrop of the Arabian Sea, these curated performances transform the lobby and premium dining areas into a sanctuary of tranquility.",
+    coverImage: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=800",
     gallery: [
-      "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=800",
-      "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=800",
-      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800"
+      { _type: 'image', url: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=800" },
+      { _type: 'video', url: "https://www.youtube.com/watch?v=LXb3EKWsInQ", thumbnail: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=800" },
+      { _type: 'image', url: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800" }
     ],
     duration: "02:15",
-    bullets: ["Lobby Ambience", "Premium Dining", "Guest Receptions"],
+    highlights: ["Lobby Ambience", "Premium Dining", "Guest Receptions"],
     isFeatured: true
   },
   {
-    id: "taj-santacruz",
-    logo: "TAJ",
-    isTaj: true,
+    _id: "taj-santacruz",
+    venueLogo: "TAJ",
     title: "Taj Santacruz",
-    subtitle: "MUMBAI",
-    description: "Live music experiences at the lobby and dining venues for elevated guest experiences.",
-    fullDescription: "Experience the vibrant energy of live music at Taj Santacruz. Our vocal and acoustic sets are perfectly tailored to complement the bustling, cosmopolitan atmosphere of the hotel. From relaxing evening lounges to upbeat weekend brunches, the performances provide a sophisticated soundtrack that enhances every moment of your stay.",
-    image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800",
+    location: "MUMBAI",
+    previewText: "Live music experiences at the lobby and dining venues for elevated guest experiences.",
+    fullText: "Experience the vibrant energy of live music at Taj Santacruz. Our vocal and acoustic sets are perfectly tailored to complement the bustling, cosmopolitan atmosphere of the hotel.",
+    coverImage: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800",
     gallery: [
-      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800",
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800",
-      "https://images.unsplash.com/photo-1470229722913-7c090b332f79?q=80&w=800"
+      { _type: 'image', url: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800" },
+      { _type: 'image', url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800" }
     ],
     duration: "01:48",
-    bullets: ["Evening Lounges", "Live Singing", "Acoustic Sets"],
-    isFeatured: false
-  },
-  {
-    id: "ginger-diu",
-    logo: "GINGER",
-    isTaj: false,
-    title: "Ginger Diu",
-    subtitle: "DIU",
-    description: "Live performances that bring energy and joy to leisure getaways and special evenings.",
-    fullDescription: "Bring your leisure getaway to life with vibrant live performances at Ginger Diu. Enjoy upbeat sunset sessions by the pool, lively beachside dinners, and energetic acoustic sets that perfectly match the holiday vibe. It’s the ultimate musical accompaniment for your relaxing beach vacation.",
-    image: "https://images.unsplash.com/photo-1470229722913-7c090b332f79?q=80&w=800",
-    gallery: [
-      "https://images.unsplash.com/photo-1470229722913-7c090b332f79?q=80&w=800",
-      "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=800",
-      "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=800"
-    ],
-    duration: "01:30",
-    bullets: ["Poolside Music", "Upbeat Sessions", "Sunset Views"],
-    isFeatured: false
-  },
-  {
-    id: "taj-mahal-palace",
-    logo: "TAJ",
-    isTaj: true,
-    title: "Taj Mahal Palace",
-    subtitle: "MUMBAI",
-    description: "Iconic heritage performances featuring classical vocalists in the grand lobby.",
-    fullDescription: "Step into history with majestic heritage performances at the iconic Taj Mahal Palace. Featuring renowned classical vocalists and traditional instrumentalists, the music resonates through the grand lobby and heritage suites, offering guests a deeply moving and culturally rich musical journey.",
-    image: "https://images.unsplash.com/photo-1519671482749-fd098f3bb3a9?q=80&w=800",
-    gallery: [
-      "https://images.unsplash.com/photo-1519671482749-fd098f3bb3a9?q=80&w=800",
-      "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=800",
-      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800"
-    ],
-    duration: "03:10",
-    bullets: ["Heritage Suites", "Classical Music", "Grand Entrances"],
-    isFeatured: false
-  },
-  {
-    id: "ginger-goa",
-    logo: "GINGER",
-    isTaj: false,
-    title: "Ginger Goa",
-    subtitle: "GOA",
-    description: "Upbeat acoustic sessions by the pool, perfectly complementing the Goan sunset.",
-    fullDescription: "Feel the rhythm of Goa with energetic live music at Ginger Goa. From vibrant pool parties to intimate acoustic sets at dusk, our performances are designed to make your Goan evenings unforgettable. Sip a cocktail, enjoy the breeze, and let the music take over.",
-    image: "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=800",
-    gallery: [
-      "https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=800",
-      "https://images.unsplash.com/photo-1470229722913-7c090b332f79?q=80&w=800",
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800"
-    ],
-    duration: "01:55",
-    bullets: ["Beach Parties", "Lively Dinners", "Acoustic Guitars"],
+    highlights: ["Evening Lounges", "Live Singing", "Acoustic Sets"],
     isFeatured: false
   }
 ];
 
-export const ExperiencesGrid = () => {
+export interface ExperiencesGridProps {
+  goldenTitle?: string;
+  title?: string;
+  subtitle?: string;
+  experiences?: ExperienceItem[];
+}
+
+export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EXPERIENCES }: ExperiencesGridProps) => {
   const swiperRef = useRef<SwiperType | null>(null);
-  const [activeExp, setActiveExp] = useState<typeof EXPERIENCES[0] | null>(null);
+  const [activeExp, setActiveExp] = useState<ExperienceItem | null>(null);
+  const [activeMedia, setActiveMedia] = useState<ExperienceMedia | null>(null);
+
+  React.useEffect(() => {
+    if (activeExp) {
+      if (activeExp.gallery && activeExp.gallery.length > 0) {
+        setActiveMedia(activeExp.gallery[0]);
+      } else {
+        setActiveMedia({ _type: 'image', url: activeExp.coverImage });
+      }
+    } else {
+      setActiveMedia(null);
+    }
+  }, [activeExp]);
 
   return (
     <>
@@ -134,21 +121,25 @@ export const ExperiencesGrid = () => {
         {/* Editorial Header Section */}
         <div className="text-center space-y-4 max-w-4xl mx-auto px-6">
           <span className="font-sans text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold font-bold block">
-            CURATED MUSICAL EXPERIENCES
+            {goldenTitle || "CURATED MUSICAL EXPERIENCES"}
           </span>
-          <h2 className="font-serif-display text-4xl sm:text-5xl lg:text-[48px] font-light tracking-wide text-foreground leading-tight">
-            Experience Across <br className="hidden sm:block" /> Iconic Hospitality Venues
+          <h2 className="font-serif-display text-4xl sm:text-5xl lg:text-[48px] font-light tracking-wide text-foreground leading-tight whitespace-pre-wrap">
+            {title || "Experience Across \n Iconic Hospitality Venues"}
           </h2>
           
-          <div className="flex items-center justify-center gap-3 pt-2">
-            <div className="h-1px w-12 bg-gold/50" />
-            <div className="w-1.5 h-1.5 rotate-45 border border-gold bg-gold" />
-            <div className="h-1px w-12 bg-gold/50" />
+          <div className="flex items-center justify-center gap-4 pt-3 pb-2">
+            <div className="h-[1.5px] w-16 sm:w-28 bg-gold" />
+            <span className="text-gold text-xl sm:text-2xl leading-none mt-[2px]">✦</span>
+            <div className="h-[1.5px] w-16 sm:w-28 bg-gold" />
           </div>
+          
+          <p className="font-serif-display text-lg sm:text-xl md:text-2xl text-foreground/80 max-w-2xl mx-auto leading-relaxed font-light">
+            {subtitle || "Creating memorable guest experiences through live music."}
+          </p>
         </div>
 
         {/* Swiper Carousel */}
-        <div className="w-full relative px-6 md:px-12 lg:px-16 pb-12">
+        <div className="w-full max-w-[1920px] mx-auto relative px-4 md:px-8 lg:px-12 pb-12">
           <Swiper
             modules={[Navigation, Pagination, EffectCoverflow]}
             effect={'coverflow'}
@@ -164,28 +155,27 @@ export const ExperiencesGrid = () => {
               slideShadows: false,
             }}
             breakpoints={{
-              640: { slidesPerView: 2, spaceBetween: 24 },
-              1024: { slidesPerView: 3, spaceBetween: 32 },
-              1440: { slidesPerView: 4, spaceBetween: 32 },
+              768: { slidesPerView: 2, spaceBetween: 24 },
+              1280: { slidesPerView: 3, spaceBetween: 40 },
             }}
             onBeforeInit={(swiper) => {
               swiperRef.current = swiper;
             }}
             className="pb-14!"
           >
-            {EXPERIENCES.map((exp, idx) => (
-              <SwiperSlide key={exp.id} className="h-auto">
+            {experiences.map((exp, idx) => (
+              <SwiperSlide key={exp._id} className="h-auto">
                 <Reveal delay={idx * 0.1} yOffset={20}>
                   <div 
                     onClick={() => setActiveExp(exp)}
                     className="block h-full cursor-pointer"
                   >
-                    <div className="flex flex-col rounded-[1.5rem overflow-hidden bg-[#0a0a0a] shadow-xl group relative border border-white/5 h-full transition-all duration-500 hover:shadow-2xl hover:border-gold/30">
+                    <div className="flex flex-col rounded-3xl overflow-hidden bg-[#0a0a0a] shadow-xl group relative border border-white/5 h-full transition-all duration-500 hover:shadow-2xl hover:border-gold/30">
                       
                       {/* Top Image Section */}
-                      <div className="relative aspect-16/10 w-full bg-[#0a0a0a] overflow-hidden">
+                      <div className="relative aspect-4/3 w-full bg-[#0a0a0a] overflow-hidden">
                         <img 
-                          src={exp.image} 
+                          src={exp.coverImage} 
                           alt={exp.title} 
                           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 opacity-90 group-hover:opacity-100" 
                         />
@@ -212,19 +202,19 @@ export const ExperiencesGrid = () => {
                         {/* Logo & Title Row */}
                         <div className="flex items-start gap-4 mb-4">
                           <div className="w-14 shrink-0 flex justify-center pt-1">
-                            {exp.isTaj ? <TajLogo /> : <GingerLogo />}
+                            {exp.venueLogo === 'TAJ' ? <TajLogo /> : exp.venueLogo === 'GINGER' ? <GingerLogo /> : null}
                           </div>
                           <div className="flex flex-col">
                             <h3 className="font-serif-display text-lg sm:text-xl text-white tracking-wide leading-tight">{exp.title}</h3>
                             <span className="font-sans text-[9px] uppercase tracking-widest text-gold-dark font-bold mt-1">
-                              {exp.subtitle}
+                              {exp.location}
                             </span>
                           </div>
                         </div>
 
                         {/* Description */}
                         <p className="font-sans text-xs text-white/70 leading-[1.6] mb-5 font-light flex-1">
-                          {exp.description}
+                          {exp.previewText}
                         </p>
 
                         {/* Footer Row */}
@@ -252,22 +242,20 @@ export const ExperiencesGrid = () => {
             ))}
           </Swiper>
 
-          {/* Custom Pagination Controls */}
-          <div className="flex items-center justify-center gap-6 mt-8">
-            <button 
-              onClick={() => swiperRef.current?.slidePrev()}
-              className="w-10 h-10 rounded-full border border-gold/40 text-gold-dark flex items-center justify-center hover:bg-gold hover:text-white transition-colors shadow-sm z-10"
-            >
-              <svg className="w-5 h-5 pr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 19l-7-7 7-7"/></svg>
-            </button>
-            
-            <button 
-              onClick={() => swiperRef.current?.slideNext()}
-              className="w-10 h-10 rounded-full border border-gold/40 text-gold-dark flex items-center justify-center hover:bg-gold hover:text-white transition-colors shadow-sm z-10"
-            >
-              <svg className="w-5 h-5 pl-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7"/></svg>
-            </button>
-          </div>
+          {/* Custom Pagination Controls - Absolute Floating */}
+          <button 
+            onClick={() => swiperRef.current?.slidePrev()}
+            className="absolute left-2 md:left-6 lg:left-8 top-[calc(50%-52px)] -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/5 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/10 hover:border-white/40 shadow-lg transition-all duration-300 z-30 group"
+          >
+            <svg className="w-6 h-6 md:w-8 md:h-8 pr-1 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          
+          <button 
+            onClick={() => swiperRef.current?.slideNext()}
+            className="absolute right-2 md:right-6 lg:right-8 top-[calc(50%-52px)] -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/5 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white/10 hover:border-white/40 shadow-lg transition-all duration-300 z-30 group"
+          >
+            <svg className="w-6 h-6 md:w-8 md:h-8 pl-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
         </div>
 
       </section>
@@ -299,25 +287,44 @@ export const ExperiencesGrid = () => {
               </button>
 
               {/* Left Side: Media Gallery */}
-              <div className="w-full md:w-1/2 lg:w-[55%] h-64 md:h-full relative bg-black flex flex-col border-r border-white/5">
+              <div className="w-full md:w-1/2 lg:w-[55%] h-72 md:h-full shrink-0 relative bg-black flex flex-col border-r border-white/5">
                 
                 {/* Main Hero Video Placeholder */}
-                <div className="relative w-full flex-1 md:flex-none md:h-[70%] group">
-                  <img src={activeExp.image} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
-                  {/* Play overlay */}
-                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full border border-gold/40 flex items-center justify-center bg-black/40 backdrop-blur-md text-white shadow-xl hover:scale-110 hover:bg-gold/20 hover:text-gold transition-all duration-300 cursor-pointer">
-                      <svg className="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                <div className="relative w-full flex-1 md:flex-none md:h-[70%] group bg-black flex items-center justify-center overflow-hidden">
+                  {activeMedia?._type === 'video' ? (
+                    <div className="w-full h-full relative flex items-center justify-center">
+                      {activeMedia?.url?.includes('cdn.sanity.io') ? (
+                        <video 
+                          src={activeMedia.url} 
+                          controls 
+                          className="w-full h-full object-contain"
+                          poster={activeMedia.thumbnail}
+                        />
+                      ) : (
+                        <>
+                          <Player
+                            url={activeMedia?.url}
+                            width="100%"
+                            height="100%"
+                            controls
+                            style={{ position: 'absolute', top: 0, left: 0 }}
+                          />
+                        </>
+                      )}
                     </div>
-                  </div>
+                  ) : (
+                    <img src={activeMedia?.url || activeExp.coverImage} className="w-full h-full object-cover opacity-90" />
+                  )}
                   {/* Duration Tag */}
-                  <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-md text-[10px] text-white/90 border border-white/10">
-                    {activeExp.duration} HD
-                  </div>
+                  {activeExp.duration && (
+                    <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-md text-[10px] text-white/90 border border-white/10 z-10 pointer-events-none">
+                      {activeExp.duration} HD
+                    </div>
+                  )}
                 </div>
 
                 {/* Thumbnails Gallery */}
-                <div className="w-full h-[30%] hidden md:block bg-[#050505] p-4">
+                <div className="w-full h-20 md:h-[30%] bg-[#050505] p-2 md:p-4 shrink-0 border-t border-white/10 md:border-t-0">
                   <Swiper
                     modules={[FreeMode]}
                     freeMode={true}
@@ -325,13 +332,18 @@ export const ExperiencesGrid = () => {
                     spaceBetween={16}
                     className="w-full h-full"
                   >
-                    {activeExp.gallery?.map((img, i) => (
+                    {activeExp.gallery?.map((media, i) => (
                       <SwiperSlide key={i} className="w-auto! h-full">
-                        <div className="h-full aspect-video rounded-xl overflow-hidden border border-white/10 relative group cursor-pointer">
-                          <img src={img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
-                          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-                            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                          </div>
+                        <div 
+                          onClick={() => setActiveMedia(media)}
+                          className={`h-full aspect-video rounded-xl overflow-hidden border transition-all cursor-pointer relative ${activeMedia === media ? 'border-gold shadow-[0_0_15px_rgba(201,167,109,0.3)]' : 'border-white/10 opacity-60 hover:opacity-100'}`}
+                        >
+                          <img src={media._type === 'video' ? (media.thumbnail || activeExp.coverImage) : media.url} className="w-full h-full object-cover" />
+                          {media._type === 'video' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                            </div>
+                          )}
                         </div>
                       </SwiperSlide>
                     ))}
@@ -340,16 +352,16 @@ export const ExperiencesGrid = () => {
               </div>
 
               {/* Right Side: Details */}
-              <div className="w-full md:w-1/2 lg:w-[45%] h-full overflow-y-auto p-8 lg:p-12 flex flex-col custom-scrollbar">
+              <div className="w-full md:w-1/2 lg:w-[45%] flex-1 min-h-0 overflow-y-auto p-6 md:p-8 lg:p-12 flex flex-col custom-scrollbar">
                 
                 {/* Logo */}
                 <div className="mb-8 flex justify-start">
-                  {activeExp.isTaj ? <TajLogo /> : <GingerLogo />}
+                  {activeExp.venueLogo === 'TAJ' ? <TajLogo /> : activeExp.venueLogo === 'GINGER' ? <GingerLogo /> : null}
                 </div>
 
                 {/* Headers */}
                 <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-gold-dark font-bold mb-3">
-                  {activeExp.subtitle}
+                  {activeExp.location}
                 </span>
                 <h2 className="font-serif-display text-3xl md:text-4xl text-white tracking-wide mb-6">
                   {activeExp.title}
@@ -357,13 +369,13 @@ export const ExperiencesGrid = () => {
 
                 {/* Body Text */}
                 <p className="font-sans text-sm text-white/70 leading-relaxed font-light mb-8">
-                  {activeExp.fullDescription}
+                  {activeExp.fullText}
                 </p>
 
                 {/* Bullets */}
                 <div className="mb-10 space-y-3">
                   <h4 className="font-sans text-[10px] uppercase tracking-widest text-white/40 font-bold mb-4 border-b border-white/10 pb-2">Experience Highlights</h4>
-                  {activeExp.bullets.map((bullet, idx) => (
+                  {(activeExp.highlights || []).map((bullet, idx) => (
                     <div key={idx} className="flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rotate-45 bg-gold-dark" />
                       <span className="font-sans text-sm text-white/80 font-light">{bullet}</span>

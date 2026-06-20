@@ -8,6 +8,7 @@ export default defineType({
     { name: 'seo', title: 'SEO Settings' },
     { name: 'hero', title: 'Hero Section' },
     { name: 'stats', title: 'Stats Section' },
+    { name: 'experiences', title: 'Experiences Section' },
     { name: 'testimonials', title: 'Testimonials' },
   ],
   fields: [
@@ -82,6 +83,28 @@ export default defineType({
         },
       ],
       description: 'Add exactly 4 statistical highlights. The icons are automatically assigned based on order (1 to 4).',
+    }),
+    // Experiences Section
+    defineField({
+      name: 'experiencesGoldenTitle',
+      title: 'Experiences Golden Title',
+      type: 'string',
+      group: 'experiences',
+      description: 'The small golden text above the main title (e.g. CURATED MUSICAL EXPERIENCES)',
+    }),
+    defineField({
+      name: 'experiencesTitle',
+      title: 'Experiences Title',
+      type: 'string',
+      group: 'experiences',
+      description: 'The main title (use Enter to break into multiple lines).',
+    }),
+    defineField({
+      name: 'experiencesSubtitle',
+      title: 'Experiences Subtitle',
+      type: 'string',
+      group: 'experiences',
+      description: 'The paragraph text below the title and star partition.',
     }),
     // Testimonials
     defineField({
