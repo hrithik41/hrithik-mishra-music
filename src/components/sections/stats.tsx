@@ -58,35 +58,40 @@ export const Stats = ({ stats }: { stats?: StatItem[] }) => {
   const displayStats = stats && stats.length > 0 ? stats : STATS_ITEMS;
 
   return (
-    <section className="w-full bg-secondary-bg/40 py-12 border-y border-border/40">
+    <section className="w-full h-auto md:h-[15vh] min-h-[140px] flex items-center relative z-10 bg-background md:bg-secondary-bg/40 pt-10 pb-12 md:py-0 border-y border-border/40">
       <FadeIn duration={0.8}>
-        {/* Divide borders display on desktop view but stack on mobile */}
-        <div className="w-full px-6 md:px-12 lg:px-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 divide-y sm:divide-y-0 lg:divide-x divide-border/50">
+        {/* Mobile: 2x2 grid. Desktop: 4 columns. */}
+        <div className="w-full h-full px-2 md:px-12 lg:px-16 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-0 md:gap-0 lg:divide-x divide-border/50 items-center">
           {displayStats.map((item, idx) => (
             <div 
               key={idx} 
-              className="flex items-center justify-start lg:justify-center gap-5 py-6 sm:py-4 lg:py-2 first:pt-0 lg:first:pt-2 last:pb-0 lg:last:pb-2 border-border/30"
+              className={`flex flex-col md:flex-row items-center justify-center gap-2 md:gap-6 py-2 border-border/30 h-full w-full ${
+                // On mobile (2x2 grid): Add vertical borders between columns and horizontal borders between rows
+                idx % 2 === 0 ? "border-r border-border/50 lg:border-r-0" : ""
+              }`}
             >
-              {/* Mini Icon Container */}
-              <div className="shrink-0 p-3 bg-background rounded-full shadow-sm border border-border/20">
+              {/* Mini Icon Container (Raw icon on mobile, circular background on desktop) */}
+              <div className="shrink-0 md:p-4 md:bg-background md:rounded-full md:shadow-sm md:border md:border-border/20">
                 {item.svgPath ? (
-                  <svg className="w-6 h-6 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 md:w-8 md:h-8 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={item.svgPath} />
                   </svg>
                 ) : (
-                  item.icon
+                  React.isValidElement(item.icon) 
+                    ? React.cloneElement(item.icon as React.ReactElement<any>, { className: "w-6 h-6 md:w-8 md:h-8 text-gold-dark" }) 
+                    : item.icon
                 )}
               </div>
 
-              {/* Numerical stats */}
-              <div className="flex flex-col">
-                <span className="font-serif-display text-3xl md:text-4xl font-semibold text-foreground tracking-tight leading-none">
+              {/* Numerical stats (Centered on mobile, left-aligned on desktop) */}
+              <div className="flex flex-col items-center md:items-start text-center md:text-left">
+                <span className="font-serif-display text-4xl md:text-5xl font-semibold text-foreground tracking-tight leading-none">
                   {item.value}
                 </span>
-                <span className="font-sans text-[10px] tracking-widest uppercase text-foreground/50 mt-1.5 font-bold">
+                <span className="font-sans text-[11px] md:text-sm tracking-widest md:uppercase text-foreground/70 md:text-foreground/50 mt-1 md:mt-1.5 font-medium md:font-bold">
                   {item.label}
                 </span>
-                <span className="font-sans text-xs tracking-wider text-foreground/80 mt-0.5">
+                <span className="font-sans text-[11px] md:text-base tracking-wider text-foreground/90 md:text-foreground/80 mt-0 md:mt-0.5">
                   {item.subLabel}
                 </span>
               </div>

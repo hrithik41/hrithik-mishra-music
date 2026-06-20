@@ -34,10 +34,9 @@ export default async function Home() {
       
       {/* 1. Cinematic Hero Section (Stretches Full Width edge-to-edge) */}
       <Hero 
-        heroTag={settings?.heroTag}
         heroTitle={settings?.heroTitle}
-        heroTitleGold={settings?.heroTitleGold}
-        heroSubtitle={settings?.heroSubtitle}
+        heroTag={settings?.heroTag}
+        heroText={settings?.heroText}
         heroBackgroundImages={heroBackgroundImages} 
         heroBackgroundImagesMobile={heroBackgroundImagesMobile} 
       />

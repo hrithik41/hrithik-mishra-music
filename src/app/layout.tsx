@@ -100,7 +100,6 @@ export default async function RootLayout({
           {children}
         </div>
         <Footer />
-        <SanityLive />
       </body>
     </html>
   );

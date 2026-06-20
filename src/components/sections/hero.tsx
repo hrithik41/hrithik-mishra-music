@@ -8,13 +8,22 @@ import { Reveal } from "@/components/animations/reveal";
 export interface HeroProps {
   heroTag?: string;
   heroTitle?: string;
-  heroTitleGold?: string;
-  heroSubtitle?: string;
+  heroText?: string;
   heroBackgroundImages?: string[];
   heroBackgroundImagesMobile?: string[];
 }
 
-export const Hero = ({ heroTag, heroTitle, heroTitleGold, heroSubtitle, heroBackgroundImages, heroBackgroundImagesMobile }: HeroProps) => {
+export const Hero = ({ heroTag, heroTitle, heroText, heroBackgroundImages, heroBackgroundImagesMobile }: HeroProps) => {
+    // Smartly split the title: if it has newlines, use them. Otherwise, split after the first word.
+    let titleLines = null;
+    if (heroTitle) {
+        if (heroTitle.includes('\n')) {
+            titleLines = heroTitle.split('\n');
+        } else {
+            const words = heroTitle.split(' ');
+            titleLines = words.length > 1 ? [words[0], words.slice(1).join(' ')] : [heroTitle];
+        }
+    }
     // Determine the images to use
     const desktopImages = (heroBackgroundImages && heroBackgroundImages.length > 0) 
         ? heroBackgroundImages 
@@ -35,7 +44,7 @@ export const Hero = ({ heroTag, heroTitle, heroTitleGold, heroSubtitle, heroBack
     }, []);
 
     return (
-        <section className="relative -mt-20 h-screen min-h-[600px] w-full overflow-hidden bg-dark-bg text-background">
+        <section className="relative -mt-20 h-screen md:h-[85vh] min-h-[600px] w-full overflow-hidden bg-dark-bg text-background">
             {/* Background Cinematic Images Carousel (Desktop) */}
             <div className="hidden md:block absolute inset-0">
                 {desktopImages.map((img, index) => (
@@ -66,31 +75,55 @@ export const Hero = ({ heroTag, heroTitle, heroTitleGold, heroSubtitle, heroBack
                 ))}
             </div>
 
-            {/* Dark gradient overlay to ensure luxury gold/white text is highly legible */}
-            <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/55 to-transparent" />
+            {/* Dark gradient overlays to perfectly frame the artist and text */}
+            {/* 1. Main Left shadow (Covers exactly 25% solid, very soft and thick at 60%) */}
+            <div className="absolute inset-0 bg-linear-to-r from-black via-black/80 to-transparent" />
+            
+            {/* 2. Subtle Right vignette */}
+            <div className="absolute inset-0 bg-linear-to-l from-black/60 to-transparent w-[15%] ml-auto" />
+            
+            {/* 3. Subtle Top vignette */}
+            <div className="absolute inset-0 bg-linear-to-b from-black/50 to-transparent h-[10%]" />
+            
+            {/* 4. Subtle Bottom vignette */}
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent h-[15%] mt-auto" />
 
             {/* Grid margin aligning content with navbar */}
             <div className="relative h-full w-full px-6 md:px-12 lg:px-16 flex items-center">
                 <div className="max-w-2xl space-y-8">
 
                     <FadeIn duration={1.0}>
-                        <div className="space-y-4">
-                            <span className="font-sans text-xs sm:text-sm tracking-[0.3em] uppercase text-gold font-bold block">
-                                {heroTag || "PROFESSIONAL FLAUTIST & VOCALIST"}
-                            </span>
-
+                        <div className="space-y-6">
                             <h1 className="font-serif-display text-5xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-[1.15] text-white">
-                                {heroTitle || "Hrithik"} <br />
-                                <span className="font-serif-display italic font-normal text-gold-hover">
-                                    {heroTitleGold || "Virendra Mishra"}
-                                </span>
+                                {titleLines ? (
+                                    <>
+                                        {titleLines.map((line, idx) => (
+                                            <span key={idx}>
+                                                {line}
+                                                {idx < titleLines.length - 1 && <br />}
+                                            </span>
+                                        ))}
+                                    </>
+                                ) : (
+                                    <>
+                                        Hrithik <br />
+                                        Virendra Mishra
+                                    </>
+                                )}
                             </h1>
+
+                            <div className="space-y-4">
+                                <span className="font-sans text-xs sm:text-sm tracking-[0.3em] uppercase text-gold font-bold block">
+                                    {heroTag || "PROFESSIONAL FLAUTIST & VOCALIST"}
+                                </span>
+                                <div className="w-12 h-1px bg-gold/80" />
+                            </div>
                         </div>
                     </FadeIn>
 
                     <Reveal delay={0.4} yOffset={20}>
-                        <p className="font-serif-quote italic text-xl sm:text-2xl text-background/80 max-w-lg leading-relaxed whitespace-pre-wrap">
-                            {heroSubtitle || "Creating memorable guest experiences through live music."}
+                        <p className="font-serif-display text-xl sm:text-2xl text-background/90 max-w-lg leading-relaxed whitespace-pre-wrap font-light">
+                            {heroText || "Creating memorable guest experiences\nthrough live music."}
                         </p>
                     </Reveal>
 
