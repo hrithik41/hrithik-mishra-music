@@ -77,9 +77,9 @@ export const Stats = ({ stats }: { stats?: StatItem[] }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={item.svgPath} />
                   </svg>
                 ) : (
-                  React.isValidElement(item.icon) 
-                    ? React.cloneElement(item.icon as React.ReactElement<any>, { className: "w-6 h-6 md:w-8 md:h-8 text-gold-dark" }) 
-                    : item.icon
+                  React.isValidElement(item.icon || STATS_ITEMS[idx]?.icon) 
+                    ? React.cloneElement((item.icon || STATS_ITEMS[idx]?.icon) as React.ReactElement<any>, { className: "w-6 h-6 md:w-8 md:h-8 text-gold-dark" }) 
+                    : (item.icon || STATS_ITEMS[idx]?.icon)
                 )}
               </div>
 

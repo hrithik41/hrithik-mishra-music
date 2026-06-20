@@ -61,12 +61,27 @@ export default defineType({
         {
           type: 'object',
           fields: [
-            { name: 'value', title: 'Value (e.g. 15+)', type: 'string' },
-            { name: 'label', title: 'Label (e.g. Years Experience)', type: 'string' },
+            { name: 'value', title: 'Number Value (e.g. 8+)', type: 'string' },
+            { name: 'label', title: 'Bold Label (e.g. Years of)', type: 'string' },
+            { name: 'subLabel', title: 'Bottom Text (e.g. Flute Performance)', type: 'string' },
           ],
+          preview: {
+            select: {
+              title: 'value',
+              label: 'label',
+              subtitle: 'subLabel'
+
+            },
+            prepare(selection: any) {
+              const { title, label, subtitle } = selection;
+              return {
+                title: `${title || 'No value'} - ${label || 'No label'} - ${subtitle || 'No label'}`
+              }
+            }
+          }
         },
       ],
-      description: 'Add statistical highlights to show on the home page.',
+      description: 'Add exactly 4 statistical highlights. The icons are automatically assigned based on order (1 to 4).',
     }),
     // Testimonials
     defineField({

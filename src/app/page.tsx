@@ -8,7 +8,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { groq } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   const { data: homePageSettings } = await sanityFetch({
