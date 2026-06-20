@@ -43,6 +43,7 @@ export default async function Home() {
 
   const experiences = (experiencesData as any[])?.map(exp => ({
     ...exp,
+    venueLogo: exp.venueLogo?.asset ? urlFor(exp.venueLogo).url() : "",
     coverImage: exp.coverImage?.asset ? urlFor(exp.coverImage).url() : "",
     gallery: exp.gallery?.map((item: any) => {
       if (item._type === 'image') {

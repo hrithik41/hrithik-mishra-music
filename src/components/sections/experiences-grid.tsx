@@ -39,25 +39,10 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 
-// Logos
-const TajLogo = () => (
-  <div className="flex flex-col items-center">
-    <span className="text-[10px] text-gold-dark font-serif-display leading-none mb-0.5">❁</span>
-    <span className="text-[26px] font-serif-display text-gold-dark tracking-widest leading-none">TAJ</span>
-  </div>
-);
-
-const GingerLogo = () => (
-  <div className="flex flex-col items-center gap-1.5">
-    <span className="text-[28px] font-sans font-medium text-gold-dark leading-none">G</span>
-    <span className="text-[10px] font-sans text-gold-dark tracking-[0.25em] leading-none">GINGER</span>
-  </div>
-);
-
 const EXPERIENCES: ExperienceItem[] = [
   {
     _id: "taj-lands-end",
-    venueLogo: "TAJ",
+    venueLogo: "",
     title: "Taj Lands End",
     location: "MUMBAI",
     previewText: "Luxury flute residency creating serene ambience and memorable moments for distinguished guests.",
@@ -74,7 +59,7 @@ const EXPERIENCES: ExperienceItem[] = [
   },
   {
     _id: "taj-santacruz",
-    venueLogo: "TAJ",
+    venueLogo: "",
     title: "Taj Santacruz",
     location: "MUMBAI",
     previewText: "Live music experiences at the lobby and dining venues for elevated guest experiences.",
@@ -201,8 +186,8 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
                         
                         {/* Logo & Title Row */}
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="w-14 shrink-0 flex justify-center pt-1">
-                            {exp.venueLogo === 'TAJ' ? <TajLogo /> : exp.venueLogo === 'GINGER' ? <GingerLogo /> : null}
+                          <div className="w-14 h-14 shrink-0 flex items-start justify-center pt-1">
+                            {exp.venueLogo ? <img src={exp.venueLogo} alt="Venue Logo" className="w-full h-auto object-contain max-h-12 drop-shadow-md" /> : null}
                           </div>
                           <div className="flex flex-col">
                             <h3 className="font-serif-display text-lg sm:text-xl text-white tracking-wide leading-tight">{exp.title}</h3>
@@ -355,8 +340,8 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
               <div className="w-full md:w-1/2 lg:w-[45%] flex-1 min-h-0 overflow-y-auto p-6 md:p-8 lg:p-12 flex flex-col custom-scrollbar">
                 
                 {/* Logo */}
-                <div className="mb-8 flex justify-start">
-                  {activeExp.venueLogo === 'TAJ' ? <TajLogo /> : activeExp.venueLogo === 'GINGER' ? <GingerLogo /> : null}
+                <div className="mb-8 flex justify-start h-10 md:h-12">
+                  {activeExp.venueLogo ? <img src={activeExp.venueLogo} alt="Venue Logo" className="h-full w-auto object-contain drop-shadow-md" /> : null}
                 </div>
 
                 {/* Headers */}

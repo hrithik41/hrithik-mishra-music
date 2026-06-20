@@ -15,14 +15,8 @@ export default defineType({
     defineField({
       name: 'venueLogo',
       title: 'Venue Logo',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Taj', value: 'TAJ' },
-          { title: 'Ginger', value: 'GINGER' },
-          { title: 'None/Other', value: 'OTHER' },
-        ],
-      },
+      type: 'image',
+      description: 'Upload the official logo image (PNG with transparent background recommended).',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
