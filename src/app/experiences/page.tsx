@@ -58,13 +58,14 @@ const FALLBACK_EXPERIENCES = [
 async function getExperiences() {
   try {
     const data = await client.fetch(
-      `*[_type == "experience"] | order(category desc) {
+      `*[_type == "experience"] | order(orderRank asc) {
         _id,
         title,
-        category,
-        description,
-        tags,
-        coverImage
+        location,
+        previewText,
+        highlights,
+        coverImage,
+        "slug": slug.current
       }`,
       {},
       { next: { revalidate: 3600 } }
@@ -83,10 +84,11 @@ export default async function ExperiencesPage() {
   const experiences = sanityExperiences.length > 0 
     ? sanityExperiences.map((exp: any) => ({
         _id: exp._id,
+        slug: exp.slug,
         title: exp.title,
-        category: exp.category,
-        description: exp.description,
-        tags: exp.tags || [],
+        category: exp.location || "Signature Performance",
+        description: exp.previewText || "",
+        tags: exp.highlights || [],
         imageUrl: exp.coverImage ? urlFor(exp.coverImage).url() : "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=800"
       }))
     : FALLBACK_EXPERIENCES;
@@ -107,14 +109,15 @@ export default async function ExperiencesPage() {
         {/* Experience Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {experiences.map((exp: any, idx: number) => {
-            const label = CATEGORY_LABELS[exp.category] || "Special Performance";
+            const label = exp.category;
             
-            // Build prefill URL parameter linking to contact form
-            const bookingUrl = `/contact?program=${encodeURIComponent(exp.title)}`;
+            // Build detailed page URL (fallback to _id if slug isn't generated yet)
+            const detailUrl = `/experiences/${exp.slug || exp._id}`;
 
             return (
               <Reveal key={exp._id} delay={idx * 0.1} yOffset={30}>
-                <div className="h-full flex flex-col justify-between rounded-2xl border border-border/40 overflow-hidden bg-secondary-bg/25 group hover:border-gold/30 hover:bg-secondary-bg/40 transition-all duration-500 shadow-sm">
+                <Link href={detailUrl} className="block h-full cursor-pointer">
+                  <div className="h-full flex flex-col justify-between rounded-2xl border border-border/40 overflow-hidden bg-secondary-bg/25 group hover:border-gold/30 hover:bg-secondary-bg/40 transition-all duration-500 shadow-sm">
                   
                   {/* Aspect Ratio Image with zoom effect */}
                   <div className="relative aspect-16/10 w-full overflow-hidden border-b border-border/20">
@@ -158,15 +161,14 @@ export default async function ExperiencesPage() {
 
                     {/* Action button */}
                     <div className="pt-4">
-                      <Link href={bookingUrl}>
-                        <Button variant="outline" className="w-full text-xs font-semibold group-hover:bg-gold group-hover:text-background group-hover:border-gold transition-colors duration-300">
-                          Book this Experience
-                        </Button>
-                      </Link>
+                      <Button variant="outline" className="w-full text-xs font-semibold group-hover:bg-gold group-hover:text-background group-hover:border-gold transition-colors duration-300">
+                        View Detailed Experience
+                      </Button>
                     </div>
                   </div>
 
                 </div>
+              </Link>
               </Reveal>
             );
           })}

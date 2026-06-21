@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="bg-dark-bg text-background/85 py-20 border-t border-border/10 font-sans">
+    <footer className="bg-dark-bg text-background/85 pt-20 pb-8 border-t border-border/10 font-sans">
       <div className="w-full px-6 md:px-12 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-12">
         
         {/* Brand Statement / Positioning */}
@@ -103,7 +103,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="w-full px-6 md:px-12 lg:px-16 mt-16 pt-8 border-t border-border/10 flex flex-col md:flex-row justify-between items-center text-xs text-background/40 gap-4">
+      <div className="w-full px-6 md:px-12 lg:px-16 mt-16 pt-6 border-t border-border/10 flex flex-col md:flex-row justify-between items-center text-xs text-background/40 gap-2">
         <p>
           &copy; {new Date().getFullYear()} Hrithik Virendra Mishra. All rights reserved.
         </p>
