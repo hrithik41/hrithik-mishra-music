@@ -33,12 +33,7 @@ export default defineType({
       description: 'Toggle to show the "FEATURED" badge on the card.',
       initialValue: false,
     }),
-    defineField({
-      name: 'duration',
-      title: 'Duration',
-      type: 'string',
-      description: 'e.g. "02:15"',
-    }),
+
     defineField({
       name: 'previewText',
       title: 'Preview Text',

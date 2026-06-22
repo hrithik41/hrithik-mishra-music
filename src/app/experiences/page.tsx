@@ -11,15 +11,6 @@ export const metadata = {
   description: "Explore performance packages and residencies tailored for luxury properties—from serene morning flutes to premium dinner vocals.",
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  morning: "Morning Ambience",
-  sunset: "Sunset Lounge",
-  brunch: "Brunch Entertainment",
-  dinner: "Dinner Experience",
-  wedding: "Wedding Entry",
-  corporate: "Corporate Events",
-};
-
 const FALLBACK_EXPERIENCES = [
   {
     _id: "m1",

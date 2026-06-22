@@ -53,7 +53,6 @@ const EXPERIENCES: ExperienceItem[] = [
       { _type: 'video', url: "https://www.youtube.com/watch?v=LXb3EKWsInQ", thumbnail: "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=800" },
       { _type: 'image', url: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800" }
     ],
-    duration: "02:15",
     highlights: ["Lobby Ambience", "Premium Dining", "Guest Receptions"],
     isFeatured: true
   },
@@ -69,7 +68,6 @@ const EXPERIENCES: ExperienceItem[] = [
       { _type: 'image', url: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=800" },
       { _type: 'image', url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800" }
     ],
-    duration: "01:48",
     highlights: ["Evening Lounges", "Live Singing", "Acoustic Sets"],
     isFeatured: false
   }
@@ -90,18 +88,21 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
   React.useEffect(() => {
     if (activeExp) {
       if (activeExp.gallery && activeExp.gallery.length > 0) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveMedia(activeExp.gallery[0]);
       } else {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveMedia({ _type: 'image', url: activeExp.coverImage });
       }
     } else {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveMedia(null);
     }
   }, [activeExp]);
 
   return (
     <>
-      <section className="w-full py-20 bg-background space-y-12 overflow-hidden flex flex-col items-center relative z-0">
+      <section className="w-full pt-12 md:pt-16 pb-0 bg-background space-y-8 md:space-y-10 overflow-hidden flex flex-col items-center relative z-0">
         
         {/* Editorial Header Section */}
         <div className="text-center space-y-4 max-w-4xl mx-auto px-6">
@@ -123,8 +124,8 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
           </p>
         </div>
 
-        {/* Swiper Carousel */}
-        <div className="w-full max-w-[1920px] mx-auto relative px-4 md:px-8 lg:px-12 pb-12">
+        {/* Swiper Slider */}
+        <div className="w-full max-w-[1920px] mx-auto relative px-4 md:px-8 lg:px-12 pb-0">
           <Swiper
             modules={[Navigation, Pagination, EffectCoverflow]}
             effect={'coverflow'}
@@ -212,10 +213,6 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
                           </div>
-                          <span className="font-sans text-[10px] text-white/40 tracking-wider font-light flex items-center gap-1.5">
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            {exp.duration}
-                          </span>
                         </div>
 
                       </div>
@@ -300,12 +297,6 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
                   ) : (
                     <img src={activeMedia?.url || activeExp.coverImage} className="w-full h-full object-cover opacity-90" />
                   )}
-                  {/* Duration Tag */}
-                  {activeExp.duration && (
-                    <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-md text-[10px] text-white/90 border border-white/10 z-10 pointer-events-none">
-                      {activeExp.duration} HD
-                    </div>
-                  )}
                 </div>
 
                 {/* Thumbnails Gallery */}
@@ -339,18 +330,22 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
               {/* Right Side: Details */}
               <div className="w-full md:w-1/2 lg:w-[45%] flex-1 min-h-0 overflow-y-auto p-6 md:p-8 lg:p-12 flex flex-col custom-scrollbar">
                 
-                {/* Logo */}
-                <div className="mb-8 flex justify-start h-10 md:h-12">
-                  {activeExp.venueLogo ? <img src={activeExp.venueLogo} alt="Venue Logo" className="h-full w-auto object-contain drop-shadow-md" /> : null}
+                {/* Header (Logo + Title) */}
+                <div className="flex items-start md:items-center gap-5 mb-8">
+                  {activeExp.venueLogo && (
+                    <div className="h-12 md:h-14 shrink-0 flex items-center">
+                      <img src={activeExp.venueLogo} alt="Venue Logo" className="h-full w-auto object-contain object-left drop-shadow-md" />
+                    </div>
+                  )}
+                  <div className="flex flex-col">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-gold-dark font-bold mb-1.5">
+                      {activeExp.location}
+                    </span>
+                    <h2 className="font-serif-display text-3xl md:text-4xl text-white tracking-wide leading-tight mt-0.5">
+                      {activeExp.title}
+                    </h2>
+                  </div>
                 </div>
-
-                {/* Headers */}
-                <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-gold-dark font-bold mb-3">
-                  {activeExp.location}
-                </span>
-                <h2 className="font-serif-display text-3xl md:text-4xl text-white tracking-wide mb-6">
-                  {activeExp.title}
-                </h2>
 
                 {/* Body Text */}
                 <p className="font-sans text-sm text-white/70 leading-relaxed font-light mb-8">

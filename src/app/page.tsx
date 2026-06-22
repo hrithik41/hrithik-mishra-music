@@ -2,8 +2,8 @@ import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
 import { ExperiencesGrid } from "@/components/sections/experiences-grid";
 import { GalleryClient } from "@/components/pages/gallery-client";
-import { SectionHeader } from "@/components/common/section-header";
-import { Reveal } from "@/components/animations/reveal";
+import { MarqueeSection } from "@/components/sections/marquee";
+
 import { sanityFetch } from "@/sanity/lib/live";
 import { groq } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
@@ -41,6 +41,10 @@ export default async function Home() {
     }`,
   });
 
+  const { data: galleryItemsData } = await sanityFetch({
+    query: groq`*[_type == "galleryItem"] | order(_createdAt desc)`,
+  });
+
   const experiences = (experiencesData as any[])?.map(exp => ({
     ...exp,
     venueLogo: exp.venueLogo?.asset ? urlFor(exp.venueLogo).url() : "",
@@ -62,6 +66,13 @@ export default async function Home() {
     })
   }));
 
+  const galleryItems = (galleryItemsData as any[])?.map((item: any) => ({
+    _id: item._id,
+    title: item.title,
+    category: item.category,
+    image: item.image?.asset ? urlFor(item.image).url() : "",
+  }));
+
   const settings: any = homePageSettings;
 
   const heroBackgroundImages = settings?.heroBackgroundImages
@@ -76,8 +87,13 @@ export default async function Home() {
         .map((img: any) => urlFor(img).url())
     : undefined;
 
+  const marqueeLogos = settings?.marqueeLogos?.map((logoItem: any) => ({
+    name: logoItem.name,
+    logoUrl: logoItem.logo?.asset ? urlFor(logoItem.logo).url() : "",
+  }));
+
   return (
-    <main className="min-h-screen bg-background text-foreground pb-20">
+    <main className="min-h-screen bg-background text-foreground pb-0">
       
       {/* 1. Cinematic Hero Section (Stretches Full Width edge-to-edge) */}
       <Hero 
@@ -100,37 +116,20 @@ export default async function Home() {
       />
 
       {/* 4. Featured Gallery (Reusing the dynamic gallery client) */}
-      <div className="-mt-10">
-        <GalleryClient 
-          tagline="FEATURED GALLERY" 
-          title="Moments that Create Memories" 
-          subtitle="Explore some selected visual snapshots of live performances at premium resorts."
-        />
-      </div>
+      <GalleryClient 
+        tagline={settings?.galleryTagline || "FEATURED GALLERY"} 
+        title={settings?.galleryTitle || "Moments that Create Memories"} 
+        subtitle={settings?.gallerySubtitle || "Explore some selected visual snapshots of live performances at premium resorts."}
+        items={galleryItems?.length > 0 ? galleryItems : undefined}
+        categories={settings?.galleryCategories}
+      />
 
-      {/* 5. Main Philosophy block */}
-      <div className="w-full px-6 md:px-12 lg:px-16 mt-20 space-y-32">
-        <section className="space-y-16">
-          <SectionHeader
-            tagline="Philosophy"
-            title="Slowing Down Time"
-            align="left"
-          />
-          
-          <div className="grid md:grid-cols-2 gap-12 text-foreground/80 font-sans leading-relaxed text-base">
-            <Reveal delay={0.1}>
-              <p>
-                Our Morning Ambience and Sunset Lounge sets are designed to blend seamlessly into the background, adding an auditory layer of sophistication that complements the architectural elegance of heritage hotels.
-              </p>
-            </Reveal>
-            <Reveal delay={0.3}>
-              <p>
-                Every performance uses a slow, calculated approach to live music—leveraging premium flutes and vocals to keep guests relaxed and fully immersed in the local heritage.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-      </div>
+      {/* 5. Partners Marquee block (Replaces Philosophy) */}
+      <MarqueeSection 
+        tagline={settings?.marqueeTagline}
+        title={settings?.marqueeTitle}
+        logos={marqueeLogos}
+      />
 
     </main>
   );

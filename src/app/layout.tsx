@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display, Cormorant_Garamond } from "next/font/google";
 import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
-import { SanityLive, sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch } from "@/sanity/lib/live";
 import { groq } from "next-sanity";
 import "./globals.css";
 
@@ -52,6 +52,10 @@ export default async function RootLayout({
     query: groq`*[_type == "navbar"][0]`,
   });
 
+  const { data: footerSettings } = await sanityFetch({
+    query: groq`*[_type == "footer"][0]`,
+  });
+
   // Tell TypeScript to relax so we can read the fields
   const settings: any = navbarSettings;
 
@@ -62,6 +66,17 @@ export default async function RootLayout({
     navLinks: settings?.navLinks || [
       { label: "Home", href: "/" } // A fallback link just in case
     ]
+  };
+
+  const fSettings: any = footerSettings;
+  const footerData = {
+    aboutTitle: fSettings?.aboutTitle,
+    aboutSubtitle: fSettings?.aboutSubtitle,
+    aboutDescription: fSettings?.aboutDescription,
+    directoryLinks: fSettings?.directoryLinks,
+    contactEmail: fSettings?.contactEmail,
+    whatsappNumber: fSettings?.whatsappNumber,
+    socialLinks: fSettings?.socialLinks,
   };
 
   // Structured data telling Google search crawlers exactly who you are and what you do
@@ -99,7 +114,7 @@ export default async function RootLayout({
         <div className="flex-1 pt-20">
           {children}
         </div>
-        <Footer />
+        <Footer data={footerData} />
       </body>
     </html>
   );
