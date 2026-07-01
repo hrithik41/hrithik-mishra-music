@@ -2,14 +2,12 @@
 
 import React, { useState } from "react";
 import { ExperienceItem, ExperienceMedia } from "@/components/sections/experiences-grid";
-import ReactPlayer from 'react-player';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
-
-const Player = ReactPlayer as any;
+import { UniversalVideoPlayer } from "@/components/ui/universal-video-player";
 
 export default function ExperienceDetailsClient({ activeExp }: { activeExp: ExperienceItem }) {
   const [activeMedia, setActiveMedia] = useState<ExperienceMedia | null>(
@@ -24,23 +22,11 @@ export default function ExperienceDetailsClient({ activeExp }: { activeExp: Expe
         {/* Main Hero Video */}
         <div className="relative w-full flex-1 min-h-[40vh] md:min-h-[50vh] lg:min-h-0 bg-black flex items-center justify-center overflow-hidden">
           {activeMedia?._type === 'video' ? (
-            <div className="w-full h-full relative flex items-center justify-center">
-              {activeMedia?.url?.includes('cdn.sanity.io') ? (
-                <video 
-                  src={activeMedia.url} 
-                  controls 
-                  className="w-full h-full object-contain"
-                  poster={activeMedia.thumbnail}
-                />
-              ) : (
-                <Player
-                  url={activeMedia?.url}
-                  width="100%"
-                  height="100%"
-                  controls
-                  style={{ position: 'absolute', top: 0, left: 0 }}
-                />
-              )}
+            <div className="w-full h-full relative flex items-center justify-center bg-black">
+              <UniversalVideoPlayer
+                url={activeMedia.url}
+                thumbnail={activeMedia.thumbnail}
+              />
             </div>
           ) : (
             <img src={activeMedia?.url || activeExp.coverImage} className="w-full h-full object-cover opacity-90" />

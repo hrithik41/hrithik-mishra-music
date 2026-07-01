@@ -5,9 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/animations/reveal";
 import { motion, AnimatePresence } from "framer-motion";
-import ReactPlayer from 'react-player';
-
-const Player = ReactPlayer as any;
+import { UniversalVideoPlayer } from "@/components/ui/universal-video-player";
 
 export interface ExperienceMedia {
   _type: 'image' | 'video';
@@ -274,25 +272,11 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
                 {/* Main Hero Video Placeholder */}
                 <div className="relative w-full flex-1 md:flex-none md:h-[70%] group bg-black flex items-center justify-center overflow-hidden">
                   {activeMedia?._type === 'video' ? (
-                    <div className="w-full h-full relative flex items-center justify-center">
-                      {activeMedia?.url?.includes('cdn.sanity.io') ? (
-                        <video 
-                          src={activeMedia.url} 
-                          controls 
-                          className="w-full h-full object-contain"
-                          poster={activeMedia.thumbnail}
-                        />
-                      ) : (
-                        <>
-                          <Player
-                            url={activeMedia?.url}
-                            width="100%"
-                            height="100%"
-                            controls
-                            style={{ position: 'absolute', top: 0, left: 0 }}
-                          />
-                        </>
-                      )}
+                    <div className="w-full h-full relative flex items-center justify-center bg-black">
+                      <UniversalVideoPlayer
+                        url={activeMedia.url}
+                        thumbnail={activeMedia.thumbnail}
+                      />
                     </div>
                   ) : (
                     <img src={activeMedia?.url || activeExp.coverImage} className="w-full h-full object-cover opacity-90" />
