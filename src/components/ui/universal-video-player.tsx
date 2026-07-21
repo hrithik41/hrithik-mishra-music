@@ -42,13 +42,16 @@ export function UniversalVideoPlayer({ url, thumbnail }: UniversalVideoPlayerPro
       const embedUrl = parsedUrl.toString();
 
       return (
-        <iframe
-          src={embedUrl}
-          className="w-full h-full border-0 absolute inset-0"
-          allowFullScreen
-          scrolling="no"
-          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        />
+        <div className="w-full h-full flex items-center justify-center absolute inset-0 bg-black">
+          <iframe
+            src={embedUrl}
+            className="w-full h-full border-0"
+            style={{ maxWidth: '100%', maxHeight: '100%', aspectRatio: '9/16' }}
+            allowFullScreen
+            scrolling="no"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          />
+        </div>
       );
     } catch (e) {
       console.error("Error formatting Instagram embed URL:", e);
@@ -62,13 +65,16 @@ export function UniversalVideoPlayer({ url, thumbnail }: UniversalVideoPlayerPro
 
   if (youtubeId) {
     return (
-      <iframe
-        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-        title="YouTube performance video"
-        className="w-full h-full border-0 absolute inset-0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      />
+      <div className="w-full h-full flex items-center justify-center absolute inset-0 bg-black">
+        <iframe
+          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`}
+          title="YouTube performance video"
+          className="w-full h-full border-0"
+          style={{ maxWidth: '100%', maxHeight: '100%', aspectRatio: '16/9' }}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        />
+      </div>
     );
   }
 
@@ -79,13 +85,16 @@ export function UniversalVideoPlayer({ url, thumbnail }: UniversalVideoPlayerPro
 
   if (vimeoId) {
     return (
-      <iframe
-        src={`https://player.vimeo.com/video/${vimeoId}?autoplay=1`}
-        title="Vimeo performance video"
-        className="w-full h-full border-0 absolute inset-0"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-      />
+      <div className="w-full h-full flex items-center justify-center absolute inset-0 bg-black">
+        <iframe
+          src={`https://player.vimeo.com/video/${vimeoId}?autoplay=1`}
+          title="Vimeo performance video"
+          className="w-full h-full border-0"
+          style={{ maxWidth: '100%', maxHeight: '100%', aspectRatio: '16/9' }}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
     );
   }
 

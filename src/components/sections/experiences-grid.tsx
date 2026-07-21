@@ -270,7 +270,7 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
               <div className="w-full md:w-1/2 lg:w-[55%] h-72 md:h-full shrink-0 relative bg-black flex flex-col border-r border-white/5">
                 
                 {/* Main Hero Video Placeholder */}
-                <div className="relative w-full flex-1 md:flex-none md:h-[70%] group bg-black flex items-center justify-center overflow-hidden">
+                <div className="relative w-full flex-1 group bg-black flex items-center justify-center overflow-hidden">
                   {activeMedia?._type === 'video' ? (
                     <div className="w-full h-full relative flex items-center justify-center bg-black">
                       <UniversalVideoPlayer
@@ -284,7 +284,7 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
                 </div>
 
                 {/* Thumbnails Gallery */}
-                <div className="w-full h-20 md:h-[30%] bg-[#050505] p-2 md:p-4 shrink-0 border-t border-white/10 md:border-t-0">
+                <div className="w-full h-24 md:h-[120px] bg-[#050505] p-3 md:p-4 shrink-0 border-t border-white/10 md:border-t-0">
                   <Swiper
                     modules={[FreeMode]}
                     freeMode={true}

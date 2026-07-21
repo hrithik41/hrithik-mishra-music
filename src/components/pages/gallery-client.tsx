@@ -103,8 +103,9 @@ export function GalleryClient({
 
                 {/* Full screen Pinterest-like Masonry Grid */}
                 <div className="w-full px-2 sm:px-6 md:px-12 lg:px-16">
-                    <div className="columns-2 md:columns-3 xl:columns-4 gap-2 md:gap-4 space-y-2 md:space-y-4">
-                        <AnimatePresence mode="popLayout">
+                    <div className="h-full md:h-[1100px] overflow-y-auto custom-scrollbar pr-2 pb-4">
+                        <div className="columns-2 md:columns-3 xl:columns-4 gap-2 md:gap-4 space-y-2 md:space-y-4">
+                            <AnimatePresence mode="popLayout">
                             {filteredItems.map((item) => (
                             <motion.div
                                 layout
@@ -123,7 +124,7 @@ export function GalleryClient({
                                         className="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                         loading="lazy"
                                     />
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-end p-4">
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-end p-6">
                                         <p className="font-serif-display text-white text-base tracking-wide leading-snug">
                                             {item.title}
                                         </p>
@@ -132,6 +133,7 @@ export function GalleryClient({
                             </motion.div>
                         ))}
                     </AnimatePresence>
+                    </div>
                 </div>
             </div>
             </div>
