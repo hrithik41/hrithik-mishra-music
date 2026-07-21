@@ -267,7 +267,7 @@ export const ExperiencesGrid = ({ goldenTitle, title, subtitle, experiences = EX
               </button>
 
               {/* Left Side: Media Gallery */}
-              <div className="w-full md:w-1/2 lg:w-[55%] h-72 md:h-full shrink-0 relative bg-black flex flex-col border-r border-white/5">
+              <div className="w-full md:w-1/2 lg:w-[55%] h-[55vh] md:h-full shrink-0 relative bg-black flex flex-col border-b md:border-b-0 md:border-r border-white/5">
                 
                 {/* Main Hero Video Placeholder */}
                 <div className="relative w-full flex-1 group bg-black flex items-center justify-center overflow-hidden">
